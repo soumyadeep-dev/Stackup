@@ -307,7 +307,7 @@
     let allVideos = [];
 
     async function loadVideos() {
-      const res = await fetch("http://localhost:5000/videos");
+      const res = await fetch("/videos");
       allVideos = await res.json();
       renderCards(allVideos);
     }

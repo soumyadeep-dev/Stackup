@@ -10,6 +10,7 @@ const cloudinary = require("cloudinary").v2;
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 // 🔐 Cloudinary config
 cloudinary.config({
