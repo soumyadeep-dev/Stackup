@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>STACKUP — Add Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0d0d0f;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      border-bottom: 1px solid #1e1e24;
+      background: #0d0d0f;
+    }
+
+    .nav-logo {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: #7c3aed; }
+
+    .back-link {
+      color: #555566;
+      font-size: 13px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: #a78bfa; }
+
+    /* FORM CONTAINER */
+    .form-wrap {
+      max-width: 480px;
+      margin: 60px auto;
+      padding: 0 24px;
+    }
+
+    .form-header {
+      margin-bottom: 36px;
+    }
+
+    .form-header h2 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .form-header h2 span { color: #7c3aed; }
+
+    .form-header p {
+      font-size: 13px;
+      color: #555566;
+    }
+
+    /* FORM FIELDS */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #6b6b7b;
+      margin-bottom: 7px;
+    }
+
+    .form-group input {
+      width: 100%;
+      background: #16161a;
+      border: 1px solid #2a2a35;
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #ffffff;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input::placeholder { color: #444455; }
+    .form-group input:focus { border-color: #7c3aed; }
+
+    .form-group input[type="file"] {
+      padding: 10px 16px;
+      color: #555566;
+      cursor: pointer;
+    }
+
+    .form-group input[type="file"]::-webkit-file-upload-button {
+      background: #2a2a35;
+      border: none;
+      color: #a78bfa;
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-right: 12px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .form-group .hint {
+      font-size: 11px;
+      color: #444455;
+      margin-top: 5px;
+      letter-spacing: 0.3px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #1e1e28;
+      margin: 24px 0;
+    }
+
+    .btn-upload {
+      width: 100%;
+      background: #7c3aed;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-upload:hover { background: #6d28d9; }
+    .btn-upload:disabled { background: #2a2a35; color: #444455; cursor: not-allowed; }
+
+    /* SUCCESS MESSAGE */
+    .success-msg {
+      display: none;
+      margin-top: 16px;
+      background: rgba(76, 175, 120, 0.1);
+      border: 1px solid rgba(76, 175, 120, 0.3);
+      border-radius: 8px;
+      padding: 14px 16px;
+      color: #4caf78;
+      font-size: 13px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">STACK<span>UP</span></a>
+    <a class="back-link" href="index.html">← Back to Discovery</a>
+  </nav>
+
+  <div class="form-wrap">
+    <div class="form-header">
+      <h2>Add Your <span>Profile</span></h2>
+      <p>Upload a gameplay clip and let players find you.</p>
+    </div>
+
+    <form id="uploadForm">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" name="name" placeholder="e.g. Steven" required />
+      </div>
+
+      <div class="form-group">
+        <label>Gaming Tag</label>
+        <input type="text" name="gaming_name" placeholder="e.g. steven2345" required />
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="form-group">
+        <label>Game</label>
+        <input type="text" name="game" placeholder="e.g. Valorant, CS2, Apex" />
+      </div>
+
+      <div class="form-group">
+        <label>Rank</label>
+        <input type="text" name="rank" placeholder="e.g. Diamond 2, Platinum" />
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="form-group">
+        <label>Discord Tag <span style="color:#444455;font-size:9px;letter-spacing:1px;">OPTIONAL</span></label>
+        <input type="text" name="discord_tag" placeholder="e.g. steven#1234 or steven" />
+        <div class="hint">So teammates can actually reach you.</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="form-group">
+        <label>Gameplay Clip</label>
+        <input type="file" name="video" accept="video/*" required />
+      </div>
+
+      <button type="submit" class="btn-upload" id="submitBtn">Upload Profile</button>
+
+      <div class="success-msg" id="successMsg">
+        ✓ Profile uploaded — you're live on the discovery page.
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const successMsg = document.getElementById("successMsg");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Uploading...";
+
+      const formData = new FormData(form);
+
+      await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      submitBtn.textContent = "Upload Profile";
+      submitBtn.disabled = false;
+      successMsg.style.display = "block";
+      form.reset();
+
+      setTimeout(() => {
+        successMsg.style.display = "none";
+      }, 4000);
+    });
+  </script>
+
+</body>
+</html>

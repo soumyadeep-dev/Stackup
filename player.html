@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>STACKUP — Player Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0d0d0f;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      border-bottom: 1px solid #1e1e24;
+      background: #0d0d0f;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: #7c3aed; }
+
+    .back-link {
+      color: #555566;
+      font-size: 13px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: #a78bfa; }
+
+    /* PROFILE LAYOUT */
+    .profile-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 40px 80px;
+    }
+
+    /* VIDEO */
+    .video-container {
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #1e1e28;
+      margin-bottom: 28px;
+      background: #16161a;
+    }
+
+    .video-container video {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* PLAYER INFO */
+    .player-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .player-names h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .player-names .real-name {
+      font-size: 13px;
+      color: #555566;
+      letter-spacing: 0.5px;
+    }
+
+    .view-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #16161a;
+      border: 1px solid #2a2a35;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: #555566;
+      white-space: nowrap;
+    }
+
+    .view-badge svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.5;
+    }
+
+    /* TAGS ROW */
+    .tags-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 6px;
+    }
+
+    .tag-game {
+      background: rgba(124, 58, 237, 0.15);
+      color: #a78bfa;
+      border: 1px solid rgba(124, 58, 237, 0.3);
+    }
+
+    .tag-rank {
+      background: rgba(251, 191, 36, 0.1);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.2);
+    }
+
+    .tag-na {
+      background: #1e1e28;
+      color: #444455;
+      border: 1px solid #2a2a35;
+    }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: #1e1e28;
+      margin: 24px 0;
+    }
+
+    /* DISCORD SECTION */
+    .discord-section {
+      background: #16161a;
+      border: 1px solid #2a2a35;
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .discord-section .label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #555566;
+      margin-bottom: 4px;
+    }
+
+    .discord-tag {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #a78bfa;
+    }
+
+    .discord-tag.empty {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #444455;
+    }
+
+    .copy-btn {
+      background: rgba(124, 58, 237, 0.15);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      color: #a78bfa;
+      padding: 9px 18px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .copy-btn:hover { background: rgba(124, 58, 237, 0.3); }
+    .copy-btn.copied { color: #4caf78; border-color: rgba(76, 175, 120, 0.4); background: rgba(76, 175, 120, 0.1); }
+
+    /* LOADING / ERROR */
+    .loading {
+      text-align: center;
+      padding: 80px 20px;
+      color: #444455;
+      font-size: 14px;
+    }
+
+    /* SKELETON */
+    .skeleton {
+      background: linear-gradient(90deg, #16161a 25%, #1e1e28 50%, #16161a 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">STACK<span>UP</span></a>
+    <a class="back-link" href="index.html">← Back to Discovery</a>
+  </nav>
+
+  <div class="profile-wrap" id="profileContent">
+    <div class="loading">Loading profile...</div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const content = document.getElementById("profileContent");
+
+    if (!id) {
+      content.innerHTML = '<div class="loading">No player ID provided.</div>';
+    } else {
+      loadProfile(id);
+    }
+
+    async function loadProfile(id) {
+      try {
+        // Increment view count
+        await fetch(`http://localhost:5000/videos/${id}/view`, { method: "POST" });
+
+        // Fetch player data
+        const res = await fetch(`http://localhost:5000/videos/${id}`);
+        if (!res.ok) throw new Error("Not found");
+        const data = await res.json();
+
+        renderProfile(data);
+      } catch (err) {
+        content.innerHTML = '<div class="loading">Player not found.</div>';
+      }
+    }
+
+    function renderProfile(data) {
+      const gameTag = data.game
+        ? `<span class="tag tag-game">${data.game}</span>`
+        : `<span class="tag tag-na">Game N/A</span>`;
+
+      const rankTag = data.rank
+        ? `<span class="tag tag-rank">${data.rank}</span>`
+        : `<span class="tag tag-na">Rank N/A</span>`;
+
+      const views = data.views || 0;
+
+      const discordHtml = data.discord_tag
+        ? `
+          <div>
+            <div class="label">Discord</div>
+            <div class="discord-tag">${data.discord_tag}</div>
+          </div>
+          <button class="copy-btn" onclick="copyDiscord('${data.discord_tag}', this)">Copy Tag</button>
+        `
+        : `
+          <div>
+            <div class="label">Discord</div>
+            <div class="discord-tag empty">Not provided</div>
+          </div>
+        `;
+
+      content.innerHTML = `
+        <div class="video-container">
+          <video src="${data.video_path}" autoplay muted loop playsinline controls></video>
+        </div>
+
+        <div class="player-header">
+          <div class="player-names">
+            <h1>${data.gaming_name}</h1>
+            <div class="real-name">${data.name}</div>
+          </div>
+          <div class="view-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            ${views} views
+          </div>
+        </div>
+
+        <div class="tags-row">
+          ${gameTag}
+          ${rankTag}
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="discord-section">
+          ${discordHtml}
+        </div>
+      `;
+    }
+
+    function copyDiscord(tag, btn) {
+      navigator.clipboard.writeText(tag).then(() => {
+        btn.textContent = "Copied!";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.textContent = "Copy Tag";
+          btn.classList.remove("copied");
+        }, 2000);
+      });
+    }
+  </script>
+
+</body>
+</html>

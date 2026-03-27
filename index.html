@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>STACKUP — Player Discovery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0d0d0f;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      border-bottom: 1px solid #1e1e24;
+      background: #0d0d0f;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: #7c3aed; }
+
+    .nav-upload {
+      background: #7c3aed;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: background 0.2s;
+    }
+
+    .nav-upload:hover { background: #6d28d9; }
+
+    /* HEADER */
+    .page-header {
+      text-align: center;
+      padding: 48px 40px 28px;
+    }
+
+    .page-header h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .page-header h1 span { color: #7c3aed; }
+
+    .page-header p {
+      font-size: 13px;
+      color: #555566;
+      letter-spacing: 0.5px;
+    }
+
+    /* SEARCH + FILTERS */
+    .controls-wrap {
+      max-width: 860px;
+      margin: 0 auto 36px;
+      padding: 0 40px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .controls-wrap input,
+    .controls-wrap select {
+      background: #16161a;
+      border: 1px solid #2a2a35;
+      border-radius: 8px;
+      padding: 13px 18px;
+      color: #ffffff;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    .controls-wrap input { flex: 1; min-width: 200px; }
+    .controls-wrap select { min-width: 160px; cursor: pointer; }
+
+    .controls-wrap input::placeholder { color: #444455; }
+    .controls-wrap input:focus,
+    .controls-wrap select:focus { border-color: #7c3aed; }
+
+    /* Style the select options (limited browser support but helps) */
+    .controls-wrap select option {
+      background: #16161a;
+      color: #ffffff;
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper::after {
+      content: '▾';
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #555566;
+      pointer-events: none;
+      font-size: 12px;
+    }
+
+    .select-wrapper select {
+      padding-right: 36px;
+    }
+
+    /* GRID */
+    #cardsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      padding: 0 40px 80px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* CARD */
+    .card {
+      background: #16161a;
+      border: 1px solid #1e1e28;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #7c3aed;
+    }
+
+    .card video {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-info {
+      padding: 14px 16px;
+    }
+
+    .card-gaming-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+
+    .card-real-name {
+      font-size: 11px;
+      color: #444455;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .tag {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 4px;
+    }
+
+    .tag-game {
+      background: rgba(124, 58, 237, 0.15);
+      color: #a78bfa;
+      border: 1px solid rgba(124, 58, 237, 0.3);
+    }
+
+    .tag-rank {
+      background: rgba(251, 191, 36, 0.1);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.2);
+    }
+
+    .tag-na {
+      background: #1e1e28;
+      color: #444455;
+      border: 1px solid #2a2a35;
+    }
+
+    .view-count {
+      margin-left: auto;
+      font-size: 10px;
+      color: #444455;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .view-count svg {
+      width: 11px;
+      height: 11px;
+      opacity: 0.5;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px 20px;
+      color: #444455;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">STACK<span>UP</span></a>
+    <a class="nav-upload" href="upload.html">+ Add Profile</a>
+  </nav>
+
+  <div class="page-header">
+    <h1>Player <span>Discovery</span></h1>
+    <p>Find your next teammate. Filter by game, rank, or name.</p>
+  </div>
+
+  <div class="controls-wrap">
+    <input type="text" id="searchInput" placeholder="Search by name, game, rank..." />
+
+    <div class="select-wrapper">
+      <select id="gameFilter">
+        <option value="">All Games</option>
+        <option value="valorant">Valorant</option>
+        <option value="cs2">CS2</option>
+        <option value="apex">Apex Legends</option>
+        <option value="fortnite">Fortnite</option>
+        <option value="overwatch">Overwatch 2</option>
+        <option value="lol">League of Legends</option>
+        <option value="dota2">Dota 2</option>
+        <option value="pubg">PUBG</option>
+        <option value="r6">Rainbow Six Siege</option>
+      </select>
+    </div>
+
+    <div class="select-wrapper">
+      <select id="rankFilter">
+        <option value="">All Ranks</option>
+        <option value="iron">Iron</option>
+        <option value="bronze">Bronze</option>
+        <option value="silver">Silver</option>
+        <option value="gold">Gold</option>
+        <option value="platinum">Platinum</option>
+        <option value="diamond">Diamond</option>
+        <option value="master">Master</option>
+        <option value="grandmaster">Grandmaster</option>
+        <option value="radiant">Radiant</option>
+        <option value="immortal">Immortal</option>
+        <option value="champion">Champion</option>
+        <option value="global elite">Global Elite</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="cardsContainer"></div>
+
+  <script>
+    const container = document.getElementById("cardsContainer");
+    const searchInput = document.getElementById("searchInput");
+    const gameFilter = document.getElementById("gameFilter");
+    const rankFilter = document.getElementById("rankFilter");
+
+    let allVideos = [];
+
+    async function loadVideos() {
+      const res = await fetch("http://localhost:5000/videos");
+      allVideos = await res.json();
+      renderCards(allVideos);
+    }
+
+    function applyFilters() {
+      const query = searchInput.value.toLowerCase();
+      const game = gameFilter.value.toLowerCase();
+      const rank = rankFilter.value.toLowerCase();
+
+      const filtered = allVideos.filter(v => {
+        const matchesSearch =
+          (v.name || "").toLowerCase().includes(query) ||
+          (v.gaming_name || "").toLowerCase().includes(query) ||
+          (v.game || "").toLowerCase().includes(query) ||
+          (v.rank || "").toLowerCase().includes(query);
+
+        const matchesGame = !game || (v.game || "").toLowerCase().includes(game);
+        const matchesRank = !rank || (v.rank || "").toLowerCase().includes(rank);
+
+        return matchesSearch && matchesGame && matchesRank;
+      });
+
+      renderCards(filtered);
+    }
+
+    function renderCards(videos) {
+      container.innerHTML = "";
+
+      if (videos.length === 0) {
+        container.innerHTML = '<div class="empty-state">No players found. Try a different search.</div>';
+        return;
+      }
+
+      videos.forEach(data => {
+        const card = document.createElement("a");
+        card.className = "card";
+        card.href = `player.html?id=${data.video_id}`;
+
+        const videoUrl = data.video_path;
+
+        const gameTag = data.game
+          ? `<span class="tag tag-game">${data.game}</span>`
+          : `<span class="tag tag-na">Game N/A</span>`;
+
+        const rankTag = data.rank
+          ? `<span class="tag tag-rank">${data.rank}</span>`
+          : `<span class="tag tag-na">Rank N/A</span>`;
+
+        const views = data.views || 0;
+
+        card.innerHTML = `
+          <video src="${videoUrl}" autoplay muted loop playsinline></video>
+          <div class="card-info">
+            <div class="card-gaming-name">${data.gaming_name}</div>
+            <div class="card-real-name">${data.name}</div>
+            <div class="card-tags">
+              ${gameTag}
+              ${rankTag}
+              <span class="view-count">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                ${views}
+              </span>
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+    gameFilter.addEventListener("change", applyFilters);
+    rankFilter.addEventListener("change", applyFilters);
+
+    loadVideos();
+  </script>
+
+</body>
+</html>
