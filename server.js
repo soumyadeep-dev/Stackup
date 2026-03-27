@@ -36,6 +36,21 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
+// Auto-create table on startup
+pool.query(`
+  CREATE TABLE IF NOT EXISTS video_library (
+    video_id SERIAL PRIMARY KEY,
+    video_path TEXT,
+    name VARCHAR(100),
+    gaming_name VARCHAR(100),
+    game VARCHAR(50),
+    rank VARCHAR(50),
+    discord_tag VARCHAR(100),
+    views INTEGER DEFAULT 0
+  );
+`).then(() => console.log('Table ready'))
+  .catch(err => console.error('Table error:', err));
+
 // ─────────────────────────────────────────
 // RUN THIS SQL IN YOUR POSTGRES FIRST:
 //
